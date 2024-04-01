@@ -1,0 +1,32 @@
+id: tongtianxing-CMSV6-default-login
+
+info:
+  name: 通天星CMSV6车辆监控平台系统弱密码漏洞
+  author: fgz
+  severity: high
+  description: CMSV6平台是基于车辆位置信息服务和实时视频传输服务的创新技术和开放运营理念。为GPS运营商车辆硬件设备制造商、车队管理企业等车辆运营相关企业提供核心基础数据服务。该系统CMSV6 7.31.0.2、7.32.0.3版本中存在弱密码漏洞。用户名：admin 密码：admin
+  reference:
+    - https://mp.weixin.qq.com/s/5NIJP-KbT90Nt-uE1JC_gg
+  tags: 2024,通天星,default-login
+  metadata:
+    fofa-query: body="/808gps/"
+  classification:
+    cvss-metrics: 
+    cvss-score:                                                   
+    cve-id: CVE-2024-29666
+    cwe-id:                                                    
+    epss-score:                                              
+    epss-percentile:                                           
+    cpe:   
+    
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}/StandardApiAction_login.action?account=admin&password=admin"
+    headers:
+      Accept-Encoding: gzip, deflate
+      Accept-Language: en
+    matchers:
+      - type: dsl
+        dsl:
+          - "status_code == 200 && contains(body, 'admin')"
