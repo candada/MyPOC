@@ -10,7 +10,7 @@ info:
   metadata:
     verified: true
     max-request: 2
-    fofa-query: title="YONYOU NC"
+    fofa-query: icon_hash="-1477694668"
   classification:
     cvss-metrics: 
     cvss-score: 
