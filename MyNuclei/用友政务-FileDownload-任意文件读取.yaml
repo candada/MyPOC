@@ -8,6 +8,10 @@ info:
   reference:
   - https://mp.weixin.qq.com/s/_ATb2MRW1_KsmuqbbdpVhA
   tags: 2024,用友,file-read
+  metadata:
+    verified: true
+    max-request: 1
+    fofa-query:  body="/df/portal/getYearRgcode.do"
   classification:
     cvss-metrics: 
     cvss-score:                                                   
@@ -37,7 +41,7 @@ http:
   - type: word
     part: body
     words:
-    - root:x
+    - 'root:x'
     condition: and
 
 
